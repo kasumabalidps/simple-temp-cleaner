@@ -1,6 +1,5 @@
 import os
 import shutil
-import ctypes
 from tkinter import Tk, Label, Button, messagebox, Checkbutton, IntVar, PhotoImage
 
 def empty_temp_folder():

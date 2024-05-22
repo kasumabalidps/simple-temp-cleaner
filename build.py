@@ -2,20 +2,32 @@ import os
 import subprocess
 import platform
 
+# Paths
 project_dir = os.path.abspath(os.path.dirname(__file__))
 windows_script = os.path.join(project_dir, 'windows.py')
 linux_script = os.path.join(project_dir, 'linux.py')
 builds_dir = os.path.join(project_dir, 'builds')
 icon_path = os.path.join(project_dir, 'image.ico')
 
+# Ensure builds directory exists
 if not os.path.exists(builds_dir):
     os.makedirs(builds_dir)
 
 def build_windows():
     print("Building portable Windows executable...")
-    command = ['pyinstaller', '--onefile', '--noconsole', '--distpath', builds_dir, windows_script]
-    if os.path.exists(icon_path):
-        command.extend(['--icon', icon_path])
+    if not os.path.exists(icon_path):
+        print(f"Icon file not found at: {icon_path}")
+        return
+
+    command = [
+        'pyinstaller', 
+        '--onefile', 
+        '--noconsole', 
+        f'--icon={icon_path}', 
+        '--distpath', builds_dir, 
+        windows_script
+    ]
+    
     result = subprocess.run(command)
     if result.returncode == 0:
         print("Windows portable build successful!")
